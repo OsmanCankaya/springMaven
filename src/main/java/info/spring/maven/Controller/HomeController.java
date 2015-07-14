@@ -38,9 +38,10 @@ public class HomeController {
 	
 	
 	/**
-	 * Returns the list of users
+	 * gets list of users
 	 * 
 	 * @param The model coming from client
+	 * @param request The request coming from client
 	 * @return The name of home page
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -60,9 +61,8 @@ public class HomeController {
 	/**
 	 * Adds a new user to the list
 	 * 
-	 * @param request 
-	 *            The request coming from client
-	 * @return A string includes html data
+	 * @param request The request coming from client
+	 * @return An Users object  includes addedUsers data
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public @ResponseBody Users addUser(HttpServletRequest request) {
@@ -113,7 +113,11 @@ public class HomeController {
 	}
 
 	
-	
+	/**
+	    * Updates the user with given identity
+	    * @param request The request coming from client
+	    * @return An Users object  includes addedUsers data 
+	*/
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public @ResponseBody Users updateUser(HttpServletRequest request) {
 		Users updatedUser = null;
