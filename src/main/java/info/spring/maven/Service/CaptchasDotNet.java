@@ -32,7 +32,7 @@ public class CaptchasDotNet  implements ICaptchasService{
   private String captchaRandom = "";
 
   /**
-   * Constructor 
+   * Constructors 
    */
   // no parameter
   public CaptchasDotNet()
@@ -131,8 +131,6 @@ public class CaptchasDotNet  implements ICaptchasService{
    * Generate audio url with parameters
    * same as image url without width and height
    */
-  
-  
   public String audioUrl() {
     if (captchaRandom=="" || captchaRandom=="used") {
       captchaRandom = randomString();
@@ -155,15 +153,9 @@ public class CaptchasDotNet  implements ICaptchasService{
     return audioUrl();
   }
 
- 
-  
- 
-
   /**
    * And this is for the check phase 
    */
-
-
   /**
    * Check the CAPTCHA code 
    * Returns 3 errors codes s, m, w and t if successfull

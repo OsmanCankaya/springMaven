@@ -28,21 +28,19 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(HomeController.class);
 
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+	
 	@Autowired
 	private IUserService userService;
 	
 	
 	@Autowired
 	private ICaptchasService captchas;
-	//
+	
+	
 	/**
 	 * Returns the list of users
 	 * 
-	 * @param The
-	 *            model coming from client
+	 * @param The model coming from client
 	 * @return The name of home page
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -50,12 +48,9 @@ public class HomeController {
 		try {
 			
 			model.addAttribute("userlist", userService.listUser());
-			
-			//test
 			captchas.setSess(request.getSession(true));
 			model.addAttribute("captchas", captchas);
-			System.out.println("boþ mu ki : "+captchas==null);
-			//
+			
 		} catch (Exception ex) {
 			logger.error("--- error: " + ex);
 		}
@@ -65,13 +60,12 @@ public class HomeController {
 	/**
 	 * Adds a new user to the list
 	 * 
-	 * @param request
+	 * @param request 
 	 *            The request coming from client
 	 * @return A string includes html data
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public @ResponseBody Users addUser(HttpServletRequest request) {
-		System.out.println("method add");
 		Users addedUser= null;
 		try {
 			// Read the form values
@@ -84,7 +78,6 @@ public class HomeController {
 			captchas.setSess(request.getSession(true));
 			char captchasCheck = captchas.check(password);
 			
-			System.out.println("cap kontrol öncesi "+captchasCheck);
 			// Backend validation controls
 			if (user.getName() == null
 					|| user.getName().equals("")
@@ -99,17 +92,12 @@ public class HomeController {
 			addedUser = userService.addUser(user);
 
 		} catch (Exception ex) {
-			System.out.println("hata "+ex);
 			logger.error("error:" + ex);
 			return null;
 		}
-		System.out.println("retunr öncesi :"+addedUser);
 		return addedUser;
 	}
 
-
-	
-	
 	
 	/**
 	 * Deletes the user with given identity
