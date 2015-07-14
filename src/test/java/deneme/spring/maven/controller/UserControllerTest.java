@@ -4,19 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.Collection;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import info.spring.maven.Controller.HomeController;
-
-
-
-<<<<<<< HEAD
-import info.spring.maven.Model.Users;
-=======
-import info.spring.maven.Model.User;
->>>>>>> origin/master
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -98,15 +87,9 @@ public class UserControllerTest {
 	}
 	
 	@Test
-<<<<<<< HEAD
-	public void addUserTest(HttpServletRequest req){
-	req=null;	
-	con.addUser(req);
-=======
 	public void addUserTest(Model model,HttpServletRequest req){
 	req=null;	
-	con.addUser(model, req);
->>>>>>> origin/master
+	con.addUser(req);
 	fail("Not yet implemented");
 	
 }

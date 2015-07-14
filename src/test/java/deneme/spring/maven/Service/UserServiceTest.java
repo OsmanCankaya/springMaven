@@ -1,11 +1,7 @@
 package deneme.spring.maven.Service;
 
 import static org.junit.Assert.*;
-<<<<<<< HEAD
 import info.spring.maven.Model.Users;
-=======
-import info.spring.maven.Model.User;
->>>>>>> origin/master
 import info.spring.maven.Service.UserService;
 
 import org.junit.After;
@@ -18,11 +14,7 @@ public class UserServiceTest {
 
 	
 	 UserService uservice=new UserService();
-<<<<<<< HEAD
 	 Users user=new Users();
-=======
-	 User user=new User();
->>>>>>> origin/master
 	 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

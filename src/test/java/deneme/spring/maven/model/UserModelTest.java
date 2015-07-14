@@ -1,12 +1,8 @@
 package deneme.spring.maven.model;
 
-import static org.junit.Assert.*;
+
 import junit.framework.TestCase;
-<<<<<<< HEAD
 import info.spring.maven.Model.Users;
-=======
-import info.spring.maven.Model.User;
->>>>>>> origin/master
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -34,11 +30,7 @@ public class UserModelTest extends TestCase {
 
 	@Test
 	public void test() {
-<<<<<<< HEAD
 		Users user=new Users();
-=======
-		User user=new User();
->>>>>>> origin/master
 		user.setName("deneme");
 		user.setSurname("deneme2");
 		user.setPhone("321654987");

@@ -34,11 +34,7 @@
 		class="org.springframework.data.mongodb.core.MongoTemplate">
 		<beans:constructor-arg name="mongo" ref="mongo" />
 		<beans:constructor-arg name="databaseName"
-<<<<<<< HEAD
 			value="Infonal" />
-=======
-			value="Userdb" />
->>>>>>> origin/master
 	</beans:bean>
 	<context:component-scan base-package="info.spring.maven" />
 
