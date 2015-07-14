@@ -3,7 +3,11 @@
 body {
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
-
+#captchas.net
+{
+	border: none; 
+	vertical-align: bottom;
+}
 #tableHeader {
 	font-size: 1.2em;
 	text-align: left;
@@ -17,7 +21,11 @@ body {
 	width: 40%;
 	border-collapse: collapse;
 }
-
+.error
+{
+	display: none; 
+	color: red !important;
+}
 .button {
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	padding: 5px 15px;

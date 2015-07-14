@@ -22,9 +22,16 @@
 <script src="resources/scripts/jquery.dataTables.min.js"
 	type="text/javascript"></script>
 
+
+
+
+
+<script type="text/javascript" src="resources/scripts/jquery.maskedinput.min.js"></script>
+
+
 <script type="text/javascript" src="resources/scripts/scripts.js"></script>
 
-<head>
+<head >
 <title>User Controller</title>
 
 <%
@@ -34,14 +41,7 @@
 
 </head>
 <body>
-	<%
-		// Construct the captchas object (Default Values)
-		CaptchasDotNet captchas = new CaptchasDotNet(
-				request.getSession(true), // Ensure session
-				"demo", // client
-				"secret" // secret
-		);
-	%>
+	
 	<!-- New User Add -->
 	<div style="width: 50%; margin-left: 25%;">
 		<div>
@@ -71,13 +71,17 @@
 				<label for="captcha0">The CAPTCHA password:</label> <input
 					type="text" placeholder="The CAPTCHA password:"
 					class="form-control" name="captcha" id="captcha0" size="16" /> <label>
-					<div id="captchaDiv"><%=captchas.image()%></div> 
+					 <div id="captchaDiv">
+			<img  id="captchas.net" src=" ${ captchas.imageUrl() }"
+			width="${ captchas.getWidth() } " height="${ captchas.getHeigh() }" alt="The CAPTCHA image" /> 
+					</div>
 					<label id="captchaEmptyValidation0" style="display: none; color: red;"></label>
 				</label> <br>
 			</div>
 
 			<button type="submit" class="btn btn-primary" onclick="addUser(0)">Add</button>
-
+			
+		
 		</div>
 
 	</div>

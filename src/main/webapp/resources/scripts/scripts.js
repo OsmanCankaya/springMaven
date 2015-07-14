@@ -1,35 +1,13 @@
-	
 	//to input mask:
 	$(document).ready(function(){ 
-	      $("input.phone").keyup(function() { 
-	                var val = $(this).val(); 
-	                var bas = val.length > 15 ? val.substr(0,15) : val; 
-	                var son = val.length > 15 ? val.substr(15,val.length) : ""; 
-	                val = val.length > 15 ? String(bas.replace(/[\D]/g, '')) + 
-	String(son.replace(/[^0-9\s\-]/g, '')) : String(val.replace(/[\D]/g, 
-	'')); 
-	                var str = ""; 
-	                if(val.length == 11) { 
-	                        str = "(" + val.substr(0,3) + ") " + val.substr(3,3) + " " + 
-	val.substr(6,2) + " " + val.substr(8,2) + " - " + 
-	val.substr(10,val.length); 
-	                } else if(val.length >= 8) { 
-	                        str = "(" + val.substr(0,3) + ") " + val.substr(3,3) + " " + 
-	val.substr(6,2) + " " + val.substr(8,val.length); 
-	                } else if(val.length >=6) { 
-	                        str = "(" + val.substr(0,3) + ") " + val.substr(3,3) + " " + 
-	val.substr(6,val.length); 
-	                } else if(val.length >=3) { 
-	                        str = "(" + val.substr(0,3) + ") " + val.substr(3,val.length); 
-	                } else { 
-	                        str = val; 
-	                } 
-	                $(this).val(str); 
-	        }); 
+		$('#telephone0').mask("(999) 999 99 99");
+		$('#telephone1').mask("(999) 999 99 99");
+		
 	}); 
 	// end of input mask
 	
 	//to using ajax
+
 	function addUser(count){	   
 		var name = $('#name' + count).val();
 		var surname = $('#surname' + count).val();
@@ -44,23 +22,47 @@
 	    $.ajax({
 	    	
 	        url: 'add', 
-	        
-	        data: dataVar,
+	        dataType: 'json', 
+	        data: dataVar , 
+	        contentType: 'application/json',
+	        mimeType: 'application/json',
 	        success: function(response) {
-	        	
-	        	$('#userTable').append(response);
-	        	$('#name' + count).val("");
-	    		$('#surname' + count).val("");
-	    		$('#telephone' + count).val("");
-	    		$('#captcha' + count).val("");
-	    		$('#loading').css('display' , 'none'); // to hide loading image
-	    		$("#captchaDiv").load(location.href + " #captchaDiv"); 
-	        }
+	        	//alert("name: "+response.name);
+	        	var	row = "<tr id = userTable" + response.id + ">"
+				+ "<td>"+ response.name + "</td>"
+				+ "<td>"+ response.surname + "</td>"
+				+ "<td>"+ response.phone + "</td>"
+				+ "<td>" + "<input type=\"submit\" class=\"btn btn-danger\" name=\"deleteButton\" value=\"Delete\" onclick=\"deleteConfirm('"
+				+ response.id + "');\"/>"
+				+ "<input type=\"submit\" class=\"btn btn-success\" name=\"updateButton\" value=\"Update\" onclick=\"updateConfirm('"
+				+ response.id + "','" + response.name + "','"
+				+ response.surname + "','" + response.phone
+				+ "');\"/>" + "</td>" + "</tr>";
+        	 $('#userTable').append(row);
+        	
+        	$('#name' + count).val("");
+    		$('#surname' + count).val("");
+    		$('#telephone' + count).val("");
+    		$('#captcha' + count).val("");
+    		$('#loading').css('display' , 'none'); // to hide loading image
+    		$("#captchaDiv").load(location.href + " #captchaDiv");
+    		
+	        } ,
+    	error: function(){
+    	//	alert("failure");
+    		$('#captcha' + count).val("");
+    		$('#loading').css('display' , 'none'); // to hide loading image
+    		$("#captchaDiv").load(location.href + " #captchaDiv");
+    	}
+	    
 	    });	  
 	}
 	
+	
+	
+	
 	function hideValidationFields(count){
-		    
+		  // alert("hide kısmı "+count);
 		$('#nameEmptyValidation' + count).hide();
 		$('#surnameEmptyValidation' + count).hide();
 		$('#telephoneEmptyValidation' + count).hide(); 
@@ -113,12 +115,16 @@
 	        	$('#userTable' + id).fadeIn(1000).fadeOut(200, function(){
 	        		$('#userTable' + id).remove();})
 	        	        $('#loading').css('display' , 'none'); // to hide loading image
-	        }
+	        } ,
+	        error: function(){
+	    		$('#loading').css('display' , 'none'); // to hide loading image
+	    	}
 	    
 	    });	  
 	}
 	
 	function deleteConfirm(id, count){
+	//	alert("deleteConfirm");
 		$("#deleteDialog").html("Are you sure you want to delete user?");
 	    $("#deleteDialog").dialog({
 	        resizable: false,
@@ -128,6 +134,7 @@
 	        width: 400,
 	        buttons: {
 	            	"Yes": function () {
+	            		
 	                $(this).dialog('close');
 	           
 	                deleteUser(id);
@@ -146,34 +153,53 @@
 		var surname = $('#surname' +  count).val();
 		var telephone = $('#telephone' + count).val();
  		var dataId = 'id=' + id + '&name=' + name + '&surname=' + surname + '&telephone=' + telephone;
- 		isSuccess = false;
+ 	//	alert("fvrvrf");
  		hideValidationFields(count);
 		if(validateFields(count)){
-			isSuccess = false;
-			return isSuccess;
+		//	alert("validate hatası");
+			return false;
 		}   
 		$('#loading').css('display' , 'block');	// to display loading image
 	    $.ajax({	        
 	        url: 'update',
 	        data: dataId,
+	        dataType: 'json' , 
+	        contentType: 'application/json',
+	        mimeType: 'application/json',
 	        success: function(response) {  
-	    	
-	        	$('#userTable' + id).replaceWith(response);
-	        	isSuccess = true;
+	        	var	row = "<tr id = userTable" + response.id + ">"
+				+ "<td>"+ response.name + "</td>"
+				+ "<td>"+ response.surname + "</td>"
+				+ "<td>"+ response.phone + "</td>"
+				+ "<td>" + "<input type=\"submit\" class=\"btn btn-danger\" name=\"deleteButton\" value=\"Delete\" onclick=\"deleteConfirm('"
+				+ response.id + "');\"/>"
+				+ "<input type=\"submit\" class=\"btn btn-success\" name=\"updateButton\" value=\"Update\" onclick=\"updateConfirm('"
+				+ response.id + "','" + response.name + "','"
+				+ response.surname + "','" + response.phone
+				+ "');\"/>" + "</td>" + "</tr>";
+	        	$('#userTable' + id).replaceWith(row);
+	        	
 	        	$('#loading').css('display' , 'none'); // to hide loading image
-	        	return isSuccess;
-	        }
-	    });	  
-	    isSuccess = true;
-	    $('#loading').css('display' , 'none'); // to hide loading image
-	    return isSuccess;
+	        //	alert("true dönüyor");
+	        	return true;
+	        } , 
+	        error: function(){
+	        	//alert("hatalı");
+	    		$('#loading').css('display' , 'none'); // to hide loading image
+	    		return false;
+	    	}
+	        
+	    }
+	   );	  
+	    return true;
 	}
 	
 	function updateConfirm(id,name,surname,telephone){
-		
+		 
 		$('#name' + 1).val(name);
 		$('#surname' + 1).val(surname);
 		$('#telephone' + 1).val(telephone);
+		hideValidationFields(1);
 	    $("#updateDialog").dialog({
 	        resizable: false,
 	        modal: true,
@@ -182,7 +208,9 @@
 	        width: 400,
 	        buttons: {
 	           	    "Update user": function () {
+	           	   //  alert(" updaten öncesi ");
 	           	  isSuccess = updateUser(id, 1); 
+	           	 // alert("isSuccess :"+isSuccess);
 	           	  if(isSuccess){
 	           		
 	           		  $(this).dialog('close');	                

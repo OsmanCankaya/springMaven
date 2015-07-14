@@ -3,9 +3,15 @@ package info.spring.maven.Service;
 import java.util.Random;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import javax.print.DocFlavor.STRING;
 import javax.servlet.http.*;
 
-public class CaptchasDotNet {
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class CaptchasDotNet  implements ICaptchasService{
   // Required Parameters
   private String client;
   private String secret;
@@ -13,7 +19,7 @@ public class CaptchasDotNet {
   final String ALPHABET_RECOMMENDED = "abcdefghkmnopqrstuvwxyz";
   // Default-Values from image and audio implementation
   final String ALPHABET_DEFAULT = "abcdefghijklmnopqrstuvwxyz";
-  final int LETTERS_DEFAULT = 6;
+  final int  LETTERS_DEFAULT = 6;
   final int WIDTH_DEFAULT = 240;
   final int HEIGHT_DEFAULT = 80;
   private String alphabet = ALPHABET_RECOMMENDED;
@@ -28,6 +34,12 @@ public class CaptchasDotNet {
   /**
    * Constructor 
    */
+  // no parameter
+  public CaptchasDotNet()
+  {
+	   this.client ="demo";
+	   this.secret= "secret";
+  }
   // only required parameters
   public CaptchasDotNet(HttpSession httpSess, 
                         String client, 
@@ -35,7 +47,8 @@ public class CaptchasDotNet {
     this.httpSess = httpSess;
     this.client   = client;
     this.secret   = secret;
-  } 
+  }
+   
   // additional alphabet, letters
   public CaptchasDotNet(HttpSession httpSess, 
                         String client, 
@@ -85,10 +98,8 @@ public class CaptchasDotNet {
    * Generate image url with parameters
    */
   public String imageUrl() {
-    // Check if random already exists or is used
-    if (captchaRandom=="" || captchaRandom=="used") {
-      captchaRandom = randomString();
-    }
+    captchaRandom = randomString();
+   
     String url = "http://image.captchas.net/";
     // Required parameters
     url += "?client=" + client;
@@ -108,6 +119,7 @@ public class CaptchasDotNet {
     }
     return url;
   }
+ 
   // the same with random
   public String imageUrl(String randomString) {
     captchaRandom = randomString;
@@ -143,50 +155,9 @@ public class CaptchasDotNet {
     return audioUrl();
   }
 
-  /**
-   * Generate complete image code with javascript for fault tolerant image loading
-   */
-  public String image() {
-    StringBuffer imageCode = new StringBuffer();
-    imageCode.append("<img style=\"border: none; vertical-align: bottom\" ");
-    imageCode.append("id=\"captchas.net\" src=\"" + imageUrl() + "\" "); 
-    imageCode.append("width=\"" + width + "\" height=\"" + height + "\" "); 
-    imageCode.append("alt=\"The CAPTCHA image\" /></a> \n");
-    imageCode.append("<script type=\"text/javascript\">\n");
-    imageCode.append("  <!--\n");
-    imageCode.append("  function captchas_image_error (image)\n");
-    imageCode.append("  {\n");
-    imageCode.append("    if (!image.timeout) return true;\n");
-    imageCode.append("    image.src = image.src.replace (/^http:\\/\\/image\\.captchas\\.net/,\n");
-    imageCode.append("                                'http://image.backup.captchas.net');\n");
-    imageCode.append("    return captchas_image_loaded (image);\n");
-    imageCode.append("  }\n\n");
-    imageCode.append("  function captchas_image_loaded (image)\n");
-    imageCode.append("  {\n");
-    imageCode.append("    if (!image.timeout) return true;\n");
-    imageCode.append("    window.clearTimeout (image.timeout);\n");
-    imageCode.append("    image.timeout = false;\n");
-    imageCode.append("    return true;\n");
-    imageCode.append("  }\n\n");
-    imageCode.append("  var image = document.getElementById ('captchas.net');\n");
-    imageCode.append("  image.onerror = function() {return captchas_image_error (image);};\n");
-    imageCode.append("  image.onload = function() {return captchas_image_loaded (image);};\n");
-    imageCode.append("  image.timeout \n");
-    imageCode.append("    = window.setTimeout(\n");
-    imageCode.append("    \"captchas_image_error (document.getElementById ('captchas.net'))\",\n");
-    imageCode.append("    10000);\n");
-    imageCode.append("  image.src = image.src;\n");
-    imageCode.append("  //--> \n");
-    imageCode.append("</script>\n");
  
-    return imageCode.toString();
-  }
-  // the same with random
-  public String image(String randomString) {
-    captchaRandom = randomString;
-    httpSess.setAttribute("captchasDotNetRandom", captchaRandom);
-    return image();
-  }
+  
+ 
 
   /**
    * And this is for the check phase 
@@ -238,5 +209,28 @@ public class CaptchasDotNet {
       // 't'rue
       return 't';
     }
+   
+  }
+  
+  // getters and setters 
+  public void setWidth(int width)
+  {
+  	this.width = width;
+  }
+  public int getWidth()
+  {
+	  return this.width;
+  }
+  public void setHeight(int height)
+  {
+  	this.height = height;
+  }
+  public int getHeigh()
+  {
+	  return this.height;
+  }
+  public void setSess(HttpSession httpSess)
+  {
+	  this.httpSess = httpSess;
   }
 }
